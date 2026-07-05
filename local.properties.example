@@ -1,0 +1,17 @@
+# Salin file ini menjadi `local.properties` lalu isi nilai sebenarnya.
+# JANGAN commit local.properties (sudah di-gitignore).
+
+# Path SDK Android (otomatis diisi Android Studio saat pertama kali sync)
+# sdk.dir=/Users/you/Library/Android/sdk
+
+# ==== Marketing Cloud Advanced — modul MAM (Mobile App Messaging) ====
+# Semua nilai diambil dari halaman setup Mobile App di MC Advanced.
+MAM_APP_ID=your-mam-app-id
+MAM_ACCESS_TOKEN=your-mam-access-token
+MAM_TENANT_ID=your-mam-tenant-id
+# Endpoint tenant Data Cloud — WAJIB https:// dan slash penutup
+MAM_ENDPOINT_URL=https://your-tenant-id.c360a.salesforce.com/
+
+# ==== Firebase (push token) ====
+# Nilai = project_number di app/google-services.json
+FCM_SENDER_ID=your-fcm-sender-id
