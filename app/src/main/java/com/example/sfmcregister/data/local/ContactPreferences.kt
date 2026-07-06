@@ -32,9 +32,14 @@ class ContactPreferences @Inject constructor(
         get() = prefs.getBoolean(KEY_MANUAL_INIT, false)
         set(value) = prefs.edit { putBoolean(KEY_MANUAL_INIT, value) }
 
+    var firstName: String?
+        get() = prefs.getString(KEY_FIRST_NAME, "Pelanggan")
+        set(value) = prefs.edit { putString(KEY_FIRST_NAME, value) }
+
     companion object {
         private const val PREF_NAME = "sfmc_contact_prefs"
         private const val KEY_CONTACT = "contact_key"
         private const val KEY_MANUAL_INIT = "manual_init_mode"
+        private const val KEY_FIRST_NAME = "first_name"
     }
 }

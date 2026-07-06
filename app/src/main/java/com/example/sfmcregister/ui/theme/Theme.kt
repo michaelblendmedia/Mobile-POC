@@ -4,28 +4,46 @@ import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
+val OcbcRed = Color(0xFFFF0000)
+val OcbcRedDark = Color(0xFFD30000)
+val SoftBlue = Color(0xFF99C2FF) // For login button
+val InputBg = Color(0x33FFFFFF) // Transparent white for inputs
+
 private val LightColors = lightColorScheme(
-    primary = Color(0xFF6750A4),
-    secondary = Color(0xFF625B71)
+    primary = OcbcRed,
+    secondary = SoftBlue,
+    background = Color.White,
+    surface = Color.White,
+    onPrimary = Color.White,
+    onSecondary = Color.White,
+    onBackground = Color.Black,
+    onSurface = Color.Black
 )
 
 private val DarkColors = darkColorScheme(
-    primary = Color(0xFFD0BCFF),
-    secondary = Color(0xFFCCC2DC)
+    primary = OcbcRedDark,
+    secondary = SoftBlue,
+    background = Color(0xFF121212),
+    surface = Color(0xFF121212),
+    onPrimary = Color.White,
+    onSecondary = Color.White,
+    onBackground = Color.White,
+    onSurface = Color.White
 )
 
 @Composable
 fun SfmcRegisterTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = true,
+    // Set dynamicColor to false by default to keep the red theme everywhere
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val context = LocalContext.current

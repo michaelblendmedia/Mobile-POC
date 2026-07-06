@@ -17,6 +17,8 @@ import javax.inject.Inject
  * Mode MANUAL (untuk testing): init DITUNDA — tidak ada komunikasi apa pun ke
  * Salesforce sampai user menekan tombol Register (lihat SfmcInitializer).
  */
+import com.google.android.gms.security.ProviderInstaller
+
 @HiltAndroidApp
 class SfmcRegisterApp : Application() {
 
@@ -25,6 +27,15 @@ class SfmcRegisterApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        // Pancing GMS ProviderInstaller di main thread untuk menghindari SecurityException
+        // di Android 8/9 pada perangkat Samsung lama.
+        try {
+            ProviderInstaller.installIfNeeded(this)
+            Log.d(TAG, "ProviderInstaller success")
+        } catch (e: Exception) {
+            Log.e(TAG, "ProviderInstaller failed: ${e.message}")
+        }
 
         // Logging verbose HANYA saat debug — untuk verifikasi registrasi.
         if (BuildConfig.DEBUG) {

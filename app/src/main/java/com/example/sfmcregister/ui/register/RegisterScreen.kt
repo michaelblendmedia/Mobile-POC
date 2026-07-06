@@ -1,40 +1,25 @@
 package com.example.sfmcregister.ui.register
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.text.selection.SelectionContainer
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.TextButton
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
@@ -42,13 +27,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 @Composable
 fun RegisterScreen(
     onRegistered: (contactKey: String) -> Unit,
+    onBackClick: () -> Unit,
     viewModel: RegisterViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbar = remember { SnackbarHostState() }
 
-    // Navigasi ke Success saat registrasi berhasil, lalu bersihkan state-nya
-    // agar kembali ke layar ini tidak memicu navigasi ulang dengan key lama.
     LaunchedEffect(state.registeredContactKey) {
         state.registeredContactKey?.let { key ->
             viewModel.consumeRegistered()
@@ -56,7 +40,6 @@ fun RegisterScreen(
         }
     }
 
-    // Tampilkan error SDK/jaringan via Snackbar
     LaunchedEffect(state.errorMessage) {
         state.errorMessage?.let {
             snackbar.showSnackbar(it)
@@ -64,36 +47,100 @@ fun RegisterScreen(
         }
     }
 
+    val backgroundColor = MaterialTheme.colorScheme.primary
+    val contentColor = Color.White
+    val textFieldColors = OutlinedTextFieldDefaults.colors(
+        focusedTextColor = contentColor,
+        unfocusedTextColor = contentColor,
+        focusedContainerColor = Color.Transparent,
+        unfocusedContainerColor = Color.Transparent,
+        cursorColor = contentColor,
+        focusedBorderColor = contentColor,
+        unfocusedBorderColor = contentColor.copy(alpha = 0.5f),
+        focusedLabelColor = contentColor,
+        unfocusedLabelColor = contentColor.copy(alpha = 0.7f),
+        errorTextColor = contentColor,
+        errorBorderColor = contentColor,
+        errorSupportingTextColor = contentColor,
+        errorLabelColor = contentColor
+    )
+
     Scaffold(
-        topBar = { CenterAlignedTopAppBar(title = { Text("Register") }) },
-        snackbarHost = { SnackbarHost(snackbar) }
+        snackbarHost = { SnackbarHost(snackbar) },
+        containerColor = backgroundColor
     ) { padding ->
         Column(
             modifier = Modifier
                 .padding(padding)
-                .padding(24.dp)
                 .fillMaxSize()
+                .background(backgroundColor)
+                .padding(24.dp)
                 .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Back",
+                    tint = contentColor,
+                    modifier = Modifier.clickable { onBackClick() }
+                )
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Text(
+                text = "Buat Akun",
+                color = contentColor,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = "Daftar untuk mulai menggunakan aplikasi",
+                color = contentColor,
+                fontSize = 14.sp
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // Form Fields
+            OutlinedTextField(
+                value = state.customContactKey,
+                onValueChange = viewModel::onCustomContactKeyChange,
+                label = { Text("User ID") },
+                colors = textFieldColors,
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+
             OutlinedTextField(
                 value = state.firstName,
                 onValueChange = viewModel::onFirstNameChange,
-                label = { Text("First Name") },
+                label = { Text("Nama Depan") },
                 isError = state.firstNameError != null,
                 supportingText = { state.firstNameError?.let { Text(it) } },
+                colors = textFieldColors,
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
+            Spacer(modifier = Modifier.height(16.dp))
+
             OutlinedTextField(
                 value = state.lastName,
                 onValueChange = viewModel::onLastNameChange,
-                label = { Text("Last Name") },
+                label = { Text("Nama Belakang") },
                 isError = state.lastNameError != null,
                 supportingText = { state.lastNameError?.let { Text(it) } },
+                colors = textFieldColors,
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
+            Spacer(modifier = Modifier.height(16.dp))
+
             OutlinedTextField(
                 value = state.email,
                 onValueChange = viewModel::onEmailChange,
@@ -101,78 +148,86 @@ fun RegisterScreen(
                 isError = state.emailError != null,
                 supportingText = { state.emailError?.let { Text(it) } },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                colors = textFieldColors,
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
+            Spacer(modifier = Modifier.height(16.dp))
 
-            // Opsional: pakai Contact Key tertentu (menyamakan identitas dengan
-            // Individual yang ditarget flow/pesan di MC). Kosong = otomatis.
+            // Referral code dummy field for visual
+            var referralCode by remember { mutableStateOf("") }
             OutlinedTextField(
-                value = state.customContactKey,
-                onValueChange = viewModel::onCustomContactKeyChange,
-                label = { Text("Contact Key (opsional)") },
-                supportingText = {
-                    Text("Kosongkan untuk otomatis. Isi untuk menyamakan dengan Individual di MC.")
-                },
+                value = referralCode,
+                onValueChange = { referralCode = it },
+                label = { Text("Kode Referral (opsional)") },
+                colors = textFieldColors,
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
 
-            // Mode manual (testing): SDK init + registrasi hanya saat Register ditekan
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text("Mode Manual SDK", style = MaterialTheme.typography.titleSmall)
-                    Text(
-                        "Init SDK & registrasi hanya saat tombol Register ditekan. " +
-                            "Berlaku penuh setelah app di-restart.",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-                Switch(
-                    checked = state.manualMode,
-                    onCheckedChange = viewModel::onManualModeChange
-                )
-            }
+            Spacer(modifier = Modifier.height(32.dp))
 
             Button(
                 onClick = viewModel::register,
                 enabled = !state.isLoading,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(52.dp)
+                    .height(50.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.White.copy(alpha = if (state.isLoading) 0.5f else 1f),
+                    contentColor = backgroundColor
+                ),
+                shape = RoundedCornerShape(8.dp)
             ) {
                 if (state.isLoading) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(22.dp),
                         strokeWidth = 2.dp,
-                        color = MaterialTheme.colorScheme.onPrimary
+                        color = backgroundColor
                     )
                 } else {
-                    Text("Register")
+                    Text("Daftar", fontWeight = FontWeight.Bold, fontSize = 16.sp)
                 }
             }
 
-            // Info semua identitas SDK (party key, device id, token, attributes)
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // Debug tools moved to bottom and styled transparently
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text("Mode Manual SDK", style = MaterialTheme.typography.titleSmall, color = contentColor)
+                }
+                Switch(
+                    checked = state.manualMode,
+                    onCheckedChange = viewModel::onManualModeChange,
+                    colors = SwitchDefaults.colors(
+                        checkedThumbColor = contentColor,
+                        checkedTrackColor = Color(0xFF99C2FF)
+                    )
+                )
+            }
+
             OutlinedButton(
                 onClick = viewModel::loadSdkInfo,
                 enabled = !state.isLoading,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = contentColor),
+                border = androidx.compose.foundation.BorderStroke(1.dp, contentColor)
             ) {
-                Text("Lihat Info SDK (party key, device id, dll)")
+                Text("Lihat Info SDK")
             }
 
-            // TESTING: reset storage SDK → app tertutup → buka lagi = device ID baru
             OutlinedButton(
                 onClick = viewModel::resetDeviceId,
                 enabled = !state.isLoading,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = contentColor),
+                border = androidx.compose.foundation.BorderStroke(1.dp, contentColor)
             ) {
-                Text("Reset Device ID (app akan tertutup)")
+                Text("Reset Device ID")
             }
         }
 
-        // Dialog Info SDK — teks bisa diseleksi/di-copy
         state.sdkInfo?.let { info ->
             AlertDialog(
                 onDismissRequest = viewModel::dismissSdkInfo,

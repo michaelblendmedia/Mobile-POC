@@ -110,6 +110,8 @@ class RegisterViewModel @Inject constructor(
             return
         }
 
+        prefs.firstName = s.firstName
+
         // Valid → proses ke Marketing Cloud
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
