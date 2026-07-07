@@ -16,6 +16,9 @@ import com.salesforce.marketingcloud.mobileappmessaging.MobileAppMessagingConfig
 import com.salesforce.marketingcloud.pushfeature.config.PushFeatureConfig
 import com.salesforce.marketingcloud.pushfeature.notifications.NotificationCustomizationOptions
 import com.salesforce.marketingcloud.pushfeature.notifications.NotificationManager
+import android.widget.RemoteViews
+import androidx.core.app.NotificationCompat
+import android.os.SystemClock
 import java.util.Random
 import com.salesforce.marketingcloud.sfmcsdk.SFMCSdk
 import com.salesforce.marketingcloud.sfmcsdk.SFMCSdkModuleConfig
@@ -94,38 +97,50 @@ class SfmcInitializer @Inject constructor(
                         setSenderId(BuildConfig.FCM_SENDER_ID)
                         setUrlHandler(urlHandler)
                         setNotificationCustomizationOptions(
-                            NotificationCustomizationOptions.create(
-                                R.drawable.ic_notification,
-                                NotificationManager.NotificationLaunchIntentProvider { ctx, message ->
-                                    val requestCode = Random().nextInt()
-                                    val url = message.url
-                                    if (url.isNullOrEmpty()) {
-                                        // Tanpa URL → buka app (MainActivity)
-                                        PendingIntent.getActivity(
-                                            ctx,
-                                            requestCode,
-                                            Intent(ctx, MainActivity::class.java),
-                                            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                                        )
-                                    } else {
-                                        // Ada URL → buka browser/deep link
-                                        PendingIntent.getActivity(
-                                            ctx,
-                                            requestCode,
-                                            Intent(Intent.ACTION_VIEW, Uri.parse(url)),
-                                            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                                        )
-                                    }
-                                },
-                                NotificationManager.NotificationChannelIdProvider { ctx, message ->
-                                    if (message.url.isNullOrEmpty()) {
-                                        // Channel default SDK ("marketing")
-                                        NotificationManager.createDefaultNotificationChannel(ctx)
-                                    } else {
-                                        URL_CHANNEL_ID
+                            NotificationCustomizationOptions.create { ctx, message ->
+                                // MOCK POC: Karena UI Dashboard versi ini tidak mendukung input Custom Key, 
+                                // kita paksa (hardcode) waktunya menjadi 2 jam dari sekarang jika key dari server kosong.
+                                val targetTimeStr = message.customKeys["countdown_target_time"]
+                                    ?: (System.currentTimeMillis() + (2 * 60 * 60 * 1000)).toString()
+                                val defaultBuilder = NotificationManager.getDefaultNotificationBuilder(
+                                    ctx, message, URL_CHANNEL_ID, R.drawable.ic_notification
+                                )
+
+                                if (!targetTimeStr.isNullOrEmpty()) {
+                                    try {
+                                        val targetTimeMillis = targetTimeStr.toLong()
+                                        val timeDiff = targetTimeMillis - System.currentTimeMillis()
+
+                                        if (timeDiff > 0) {
+                                            val remoteViews = RemoteViews(ctx.packageName, R.layout.layout_custom_countdown_notification)
+                                            remoteViews.setTextViewText(R.id.notification_title, message.title ?: "Promo Spesial")
+                                            
+                                            val baseTime = SystemClock.elapsedRealtime() + timeDiff
+                                            remoteViews.setChronometer(R.id.notification_chronometer, baseTime, null, true)
+
+                                            defaultBuilder.setCustomContentView(remoteViews)
+                                            defaultBuilder.setStyle(NotificationCompat.DecoratedCustomViewStyle())
+                                        }
+                                    } catch (e: Exception) {
+                                        Log.e(TAG, "Gagal memparsing countdown_target_time", e)
                                     }
                                 }
-                            )
+
+                                val requestCode = Random().nextInt()
+                                val url = message.url
+                                val intent = if (url.isNullOrEmpty()) {
+                                    Intent(ctx, MainActivity::class.java)
+                                } else {
+                                    Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                                }
+                                val pendingIntent = PendingIntent.getActivity(
+                                    ctx, requestCode, intent,
+                                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                                )
+                                defaultBuilder.setContentIntent(pendingIntent)
+
+                                defaultBuilder
+                            }
                         )
                     }.build()
                 }

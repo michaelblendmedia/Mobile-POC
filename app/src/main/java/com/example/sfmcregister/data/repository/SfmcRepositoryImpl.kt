@@ -81,9 +81,9 @@ class SfmcRepositoryImpl @Inject constructor(
     override suspend fun trackEvent(name: String, attributes: Map<String, Any>) {
         try {
             val sdk = awaitSdkReady()
-            // Menggunakan CustomEvent dari SFMCSdk untuk Event Tracking
-            val event = com.salesforce.marketingcloud.sfmcsdk.components.events.CustomEvent(name, attributes)
-            sdk.track(event)
+            // Menggunakan EventManager dari SFMCSdk untuk Event Tracking
+            val event = com.salesforce.marketingcloud.sfmcsdk.components.events.EventManager.customEvent(name, attributes)
+            SFMCSdk.track(event)
             Log.i(TAG, "Event tracked: $name")
         } catch (t: Throwable) {
             Log.e(TAG, "trackEvent failed for $name", t)

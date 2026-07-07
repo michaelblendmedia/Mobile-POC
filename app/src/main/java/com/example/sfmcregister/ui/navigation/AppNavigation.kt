@@ -21,6 +21,7 @@ object Routes {
     const val QRIS = "qris"
     const val KARTU = "kartu"
     const val REGISTER = "register"
+    const val GAMIFICATION = "gamification"
     const val SUCCESS = "success/{key}"
     fun success(key: String) = "success/$key"
 }
@@ -91,6 +92,15 @@ fun AppNavigation() {
                         popUpTo(0) // clear stack
                     }
                 }
+            )
+        }
+
+        composable(
+            route = Routes.GAMIFICATION,
+            deepLinks = listOf(androidx.navigation.navDeepLink { uriPattern = "ocbcmobile://gamification" })
+        ) {
+            com.example.sfmcregister.ui.dashboard.GamificationScreen(
+                onBackClick = { nav.popBackStack() }
             )
         }
     }

@@ -18,7 +18,7 @@ fun prop(key: String): String = (localProps[key] as String?) ?: ""
 
 android {
     namespace = "com.example.sfmcregister"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.sfmcregister"
