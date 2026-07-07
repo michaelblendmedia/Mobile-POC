@@ -13,4 +13,10 @@ interface SfmcRepository {
      * @return Contact Key (UUID) bila sukses.
      */
     suspend fun registerContact(form: RegisterForm): SfmcResult<String>
+
+    /**
+     * Melacak event khusus (Custom Event) ke Marketing Cloud.
+     * Fitur Event Tracking (MAM SDK).
+     */
+    suspend fun trackEvent(name: String, attributes: Map<String, Any> = emptyMap())
 }
