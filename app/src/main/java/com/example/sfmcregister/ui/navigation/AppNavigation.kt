@@ -22,6 +22,9 @@ object Routes {
     const val KARTU = "kartu"
     const val REGISTER = "register"
     const val GAMIFICATION = "gamification"
+    const val PUZZLE = "puzzle"
+    const val GRAPPLE = "grapple"
+    const val SCRATCH = "scratch"
     const val SUCCESS = "success/{key}"
     fun success(key: String) = "success/$key"
 }
@@ -47,7 +50,11 @@ fun AppNavigation() {
             DashboardScreen(
                 onTransferClick = { nav.navigate(Routes.TRANSFER) },
                 onQrisClick = { nav.navigate(Routes.QRIS) },
-                onKartuClick = { nav.navigate(Routes.KARTU) }
+                onKartuClick = { nav.navigate(Routes.KARTU) },
+                onGamificationClick = { nav.navigate(Routes.GAMIFICATION) },
+                onPuzzleClick = { nav.navigate(Routes.PUZZLE) },
+                onGrappleClick = { nav.navigate(Routes.GRAPPLE) },
+                onScratchClick = { nav.navigate(Routes.SCRATCH) }
             )
         }
 
@@ -100,6 +107,33 @@ fun AppNavigation() {
             deepLinks = listOf(androidx.navigation.navDeepLink { uriPattern = "ocbcmobile://gamification" })
         ) {
             com.example.sfmcregister.ui.dashboard.GamificationScreen(
+                onBackClick = { nav.popBackStack() }
+            )
+        }
+
+        composable(
+            route = Routes.PUZZLE,
+            deepLinks = listOf(androidx.navigation.navDeepLink { uriPattern = "ocbcmobile://puzzle" })
+        ) {
+            com.example.sfmcregister.ui.dashboard.PuzzleGameScreen(
+                onBackClick = { nav.popBackStack() }
+            )
+        }
+
+        composable(
+            route = Routes.GRAPPLE,
+            deepLinks = listOf(androidx.navigation.navDeepLink { uriPattern = "ocbcmobile://grapple" })
+        ) {
+            com.example.sfmcregister.ui.dashboard.GrappleGameScreen(
+                onBackClick = { nav.popBackStack() }
+            )
+        }
+
+        composable(
+            route = Routes.SCRATCH,
+            deepLinks = listOf(androidx.navigation.navDeepLink { uriPattern = "ocbcmobile://scratch" })
+        ) {
+            com.example.sfmcregister.ui.dashboard.ScratchGameScreen(
                 onBackClick = { nav.popBackStack() }
             )
         }

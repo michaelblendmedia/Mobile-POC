@@ -84,6 +84,13 @@ class RegisterViewModel @Inject constructor(
     fun onFirstNameChange(v: String) = _uiState.update { it.copy(firstName = v, firstNameError = null) }
     fun onLastNameChange(v: String) = _uiState.update { it.copy(lastName = v, lastNameError = null) }
     fun onEmailChange(v: String) = _uiState.update { it.copy(email = v, emailError = null) }
+    fun onAgeChange(v: String) = _uiState.update { it.copy(age = v) }
+    fun onBirthDateChange(v: String) = _uiState.update { it.copy(birthDate = v) }
+    fun onCityChange(v: String) = _uiState.update { it.copy(city = v) }
+    fun onGenderChange(v: String) = _uiState.update { it.copy(gender = v) }
+    fun onOccupationChange(v: String) = _uiState.update { it.copy(occupation = v) }
+    fun onPhoneChange(v: String) = _uiState.update { it.copy(phone = v) }
+    fun onProvinceChange(v: String) = _uiState.update { it.copy(province = v) }
     fun onCustomContactKeyChange(v: String) = _uiState.update { it.copy(customContactKey = v) }
     fun consumeError() = _uiState.update { it.copy(errorMessage = null) }
 
@@ -121,6 +128,13 @@ class RegisterViewModel @Inject constructor(
                     firstName = s.firstName,
                     lastName = s.lastName,
                     email = s.email,
+                    age = s.age,
+                    birthDate = s.birthDate,
+                    city = s.city,
+                    gender = s.gender,
+                    occupation = s.occupation,
+                    phone = s.phone,
+                    province = s.province,
                     contactKeyOverride = s.customContactKey
                 )
             )

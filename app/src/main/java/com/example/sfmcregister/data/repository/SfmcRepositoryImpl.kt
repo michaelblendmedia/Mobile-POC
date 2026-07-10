@@ -61,14 +61,25 @@ class SfmcRepositoryImpl @Inject constructor(
                 partyIdentificationNumber = contactKey
                 partyIdentificationName = "SimplePocContact"
                 partyIdentificationType = "CustomerId"
-                attributes.putAll(
-                    mapOf(
-                        "firstName" to form.firstName.trim(),
-                        "lastName" to form.lastName.trim(),
-                        "email" to form.email.trim()
-                    )
-                )
+                val attrs = mutableMapOf<String, String>()
+                attrs["firstName"] = form.firstName.trim()
+                attrs["lastName"] = form.lastName.trim()
+                attrs["email"] = form.email.trim()
+
+                // Tambahkan field custom jika tidak kosong
+                if (form.age.isNotBlank()) attrs["age"] = form.age.trim()
+                if (form.birthDate.isNotBlank()) attrs["birthDate"] = form.birthDate.trim()
+                if (form.city.isNotBlank()) attrs["city"] = form.city.trim()
+                if (form.gender.isNotBlank()) attrs["gender"] = form.gender.trim()
+                if (form.occupation.isNotBlank()) attrs["occupation"] = form.occupation.trim()
+                if (form.phone.isNotBlank()) attrs["phone"] = form.phone.trim()
+                if (form.province.isNotBlank()) attrs["province"] = form.province.trim()
+
+                attributes.putAll(attrs)
             }
+
+            // Fire an explicit custom event for registration
+            trackEvent("User_Registered", mapOf("ContactKey" to contactKey))
 
             Log.i(TAG, "Contact registered: $contactKey")
             SfmcResult.Success(contactKey)

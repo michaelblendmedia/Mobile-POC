@@ -26,6 +26,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="ocbcmobile" android:host="gamification" />
+                <data android:scheme="ocbcmobile" android:host="puzzle" />
+                <data android:scheme="ocbcmobile" android:host="grapple" />
+                <data android:scheme="ocbcmobile" android:host="scratch" />
             </intent-filter>
         </activity>
 

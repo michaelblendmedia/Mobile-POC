@@ -31,7 +31,11 @@ fun DashboardScreen(
     viewModel: DashboardViewModel = hiltViewModel(),
     onTransferClick: () -> Unit = {},
     onQrisClick: () -> Unit = {},
-    onKartuClick: () -> Unit = {}
+    onKartuClick: () -> Unit = {},
+    onGamificationClick: () -> Unit = {},
+    onPuzzleClick: () -> Unit = {},
+    onGrappleClick: () -> Unit = {},
+    onScratchClick: () -> Unit = {}
 ) {
     Scaffold(
         bottomBar = { 
@@ -142,6 +146,10 @@ fun DashboardScreen(
                                     "Transfer" -> onTransferClick()
                                     "QRIS" -> onQrisClick()
                                     "Kartu" -> onKartuClick()
+                                    "Events" -> onGamificationClick()
+                                    "Inbox" -> onPuzzleClick()
+                                    "Location" -> onGrappleClick()
+                                    "Deposito" -> onScratchClick()
                                 }
                             })
                         }
@@ -154,6 +162,10 @@ fun DashboardScreen(
                                     "Transfer" -> onTransferClick()
                                     "QRIS" -> onQrisClick()
                                     "Kartu" -> onKartuClick()
+                                    "Events" -> onGamificationClick()
+                                    "Inbox" -> onPuzzleClick()
+                                    "Location" -> onGrappleClick()
+                                    "Deposito" -> onScratchClick()
                                 }
                             })
                         }

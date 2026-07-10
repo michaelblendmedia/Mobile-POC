@@ -154,12 +154,72 @@ fun RegisterScreen(
             )
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Referral code dummy field for visual
-            var referralCode by remember { mutableStateOf("") }
             OutlinedTextField(
-                value = referralCode,
-                onValueChange = { referralCode = it },
-                label = { Text("Kode Referral (opsional)") },
+                value = state.phone,
+                onValueChange = viewModel::onPhoneChange,
+                label = { Text("Nomor Telepon (opsional)") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+                colors = textFieldColors,
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedTextField(
+                value = state.age,
+                onValueChange = viewModel::onAgeChange,
+                label = { Text("Umur (opsional)") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                colors = textFieldColors,
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedTextField(
+                value = state.birthDate,
+                onValueChange = viewModel::onBirthDateChange,
+                label = { Text("Tanggal Lahir (opsional)") },
+                colors = textFieldColors,
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedTextField(
+                value = state.gender,
+                onValueChange = viewModel::onGenderChange,
+                label = { Text("Gender (opsional)") },
+                colors = textFieldColors,
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedTextField(
+                value = state.city,
+                onValueChange = viewModel::onCityChange,
+                label = { Text("Kota (opsional)") },
+                colors = textFieldColors,
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedTextField(
+                value = state.province,
+                onValueChange = viewModel::onProvinceChange,
+                label = { Text("Provinsi (opsional)") },
+                colors = textFieldColors,
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedTextField(
+                value = state.occupation,
+                onValueChange = viewModel::onOccupationChange,
+                label = { Text("Pekerjaan (opsional)") },
                 colors = textFieldColors,
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()

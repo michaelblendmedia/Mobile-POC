@@ -5,6 +5,13 @@ data class RegisterUiState(
     val firstName: String = "",
     val lastName: String = "",
     val email: String = "",
+    val age: String = "",
+    val birthDate: String = "",
+    val city: String = "",
+    val gender: String = "",
+    val occupation: String = "",
+    val phone: String = "",
+    val province: String = "",
     val customContactKey: String = "",       // Opsional: pakai Contact Key tertentu
     val firstNameError: String? = null,
     val lastNameError: String? = null,

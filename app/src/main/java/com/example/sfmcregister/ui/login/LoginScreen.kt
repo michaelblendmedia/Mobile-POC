@@ -123,6 +123,7 @@ fun LoginScreen(
                 if (userId.isNotBlank()) {
                     viewModel.setFirstName(userId)
                 }
+                viewModel.trackEvent("User_Login", mapOf("UserId" to userId))
                 onLoginClick()
             },
             modifier = Modifier
