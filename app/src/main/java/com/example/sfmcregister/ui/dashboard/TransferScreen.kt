@@ -19,15 +19,27 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.sfmcregister.ui.theme.OcbcRed
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TransferScreen(
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    viewModel: DashboardViewModel = hiltViewModel()
 ) {
     var nominal by remember { mutableStateOf("") }
     var catatan by remember { mutableStateOf("") }
+
+    // Trigger In-App Message MC Advanced: dikirim sekali saat halaman
+    // Transfer tampil (LaunchedEffect(Unit) tidak terpanggil ulang saat
+    // recomposition, sehingga tidak ada duplicate event).
+    LaunchedEffect(Unit) {
+        viewModel.sendEventImmediate(
+            "transfer_page_open",
+            mapOf("screen" to "transfer")
+        )
+    }
 
     Scaffold(
         topBar = {

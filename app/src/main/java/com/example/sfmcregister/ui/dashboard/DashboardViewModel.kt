@@ -25,4 +25,10 @@ class DashboardViewModel @Inject constructor(
             repository.trackEvent(name, attributes)
         }
     }
+
+    fun sendEventImmediate(name: String, attributes: Map<String, Any> = emptyMap()) {
+        viewModelScope.launch {
+            repository.sendEventImmediate(name, attributes)
+        }
+    }
 }

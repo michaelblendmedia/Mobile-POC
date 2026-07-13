@@ -101,6 +101,21 @@ class SfmcRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun sendEventImmediate(name: String, attributes: Map<String, Any>) {
+        try {
+            awaitSdkReady()
+            val event = com.salesforce.marketingcloud.sfmcsdk.components.events.EventManager.customEvent(name, attributes)
+            if (event == null) {
+                Log.e(TAG, "sendEventImmediate: customEvent returned null for $name (nama event tidak valid?)")
+                return
+            }
+            SFMCSdk.sendImmediate(event)
+            Log.i(TAG, "Event sent immediately: $name $attributes")
+        } catch (t: Throwable) {
+            Log.e(TAG, "sendEventImmediate failed for $name", t)
+        }
+    }
+
     /** Bungkus SFMCSdk.requestSdk (callback) menjadi suspend function. */
     private suspend fun awaitSdkReady(): SFMCSdk =
         suspendCancellableCoroutine { cont ->

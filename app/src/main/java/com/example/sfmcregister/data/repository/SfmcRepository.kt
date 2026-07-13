@@ -19,4 +19,11 @@ interface SfmcRepository {
      * Fitur Event Tracking (MAM SDK).
      */
     suspend fun trackEvent(name: String, attributes: Map<String, Any> = emptyMap())
+
+    /**
+     * Kirim Custom Event secara langsung (tanpa antrean batch) via
+     * SFMCSdk.sendImmediate — dipakai untuk trigger In-App Message
+     * yang butuh evaluasi real-time (mis. transfer_page_open).
+     */
+    suspend fun sendEventImmediate(name: String, attributes: Map<String, Any> = emptyMap())
 }
