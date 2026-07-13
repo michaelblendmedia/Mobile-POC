@@ -149,6 +149,15 @@ class SfmcInitializer @Inject constructor(
             Log.i(TAG, "SFMC SDK init status: ${initStatus.status} (sumber: $source)")
             initDone.complete(initStatus.status.toString())
         }
+
+        com.sfmc.customhtmliam.CustomHtmlIam.init(
+            application = context.applicationContext as Application,
+            config = com.sfmc.customhtmliam.CustomHtmlIamConfig(
+                matcher = com.sfmc.customhtmliam.CustomHtmlMatcher.byTitlePrefix("chtml:"),
+                contentSource = com.sfmc.customhtmliam.ContentSource.MESSAGE_BODY_HTML,
+                debugLogging = BuildConfig.DEBUG
+            )
+        )
     }
 
     /**

@@ -24,3 +24,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "SFMC Register"
 include(":app")
+include(":customhtmliam")

@@ -63,6 +63,9 @@ dependencies {
     // (endpoint umamobile). Sesuai LearningApp resmi Salesforce.
     implementation("com.salesforce.marketingcloud:mobileappmessagingsdk:1.1.+")
 
+    // Custom HTML In-App Message Module
+    implementation(project(":customhtmliam"))
+
     // Firebase Cloud Messaging — untuk push token (deviceSystemToken di registrasi)
     implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
     implementation("com.google.firebase:firebase-messaging")

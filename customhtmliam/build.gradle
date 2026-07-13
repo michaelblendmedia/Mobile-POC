@@ -1,0 +1,56 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+// Custom HTML In-App Message overlay for the Marketing Cloud Unified Mobile SDK.
+// Self-contained Android library: no host-app references, no androidx UI deps. See README.md.
+android {
+    namespace 'com.sfmc.customhtmliam'
+    compileSdk 36
+
+    defaultConfig {
+        minSdkVersion 26
+        targetSdkVersion 36
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        // Ships the R8/ProGuard keep rule for the JS bridge to every consumer automatically,
+        // so integrators do not have to copy it into their own proguard-rules.pro.
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
+    testOptions {
+        // android.util.Log / org.json in android.jar are stubbed; return defaults so pure-JVM
+        // unit tests run without an emulator. The tests put a real org.json on the test classpath.
+        unitTests.returnDefaultValues = true
+    }
+}
+
+dependencies {
+    // Marketing Cloud Unified Mobile SDK — the InAppMessageManager listener, InAppMessage model,
+    // and the in-app messaging feature module the overlay integrates with. `compileOnly` +
+    // `testCompileOnly`: the consuming app already depends on the SDK, so the library compiles
+    compileOnly("com.salesforce.marketingcloud:marketingcloudsdk:11.0.+")
+    testCompileOnly("com.salesforce.marketingcloud:marketingcloudsdk:11.0.+")
+    androidTestImplementation("com.salesforce.marketingcloud:marketingcloudsdk:11.0.+")
+
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.2"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.2.2"
+
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3'
+    // Real org.json for unit tests: android.jar's org.json returns defaults under
+    // returnDefaultValues, so MarketingCloudCustomEventSink's JSON parsing needs a concrete impl.
+    testImplementation 'org.json:json:20240303'
+
+    androidTestImplementation 'androidx.test:core:1.6.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation 'androidx.test:runner:1.6.2'
+    androidTestImplementation 'androidx.test:rules:1.6.1'
+}

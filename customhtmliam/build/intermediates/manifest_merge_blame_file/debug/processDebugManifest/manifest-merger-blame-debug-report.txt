@@ -1,0 +1,16 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.sfmc.customhtmliam" >
+4
+5    <uses-sdk android:minSdkVersion="26" />
+6
+7    <!--
+8         Remote HTML fetch (ContentSource.MESSAGE_BODY_URL / contentUrl / contentBaseUrl) needs
+9         network access. Declared here so it merges into any consuming app automatically, whether
+10         or not the host already pulls in the Marketing Cloud SDK (which also declares it).
+11    -->
+12    <uses-permission android:name="android.permission.INTERNET" />
+12-->/Users/nurcahyowibowo/StudioProjects/Mobile-POC/customhtmliam/src/main/AndroidManifest.xml:7:5-67
+12-->/Users/nurcahyowibowo/StudioProjects/Mobile-POC/customhtmliam/src/main/AndroidManifest.xml:7:22-64
+13
+14</manifest>

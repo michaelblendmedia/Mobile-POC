@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <style>
+    html, body { margin: 0; padding: 0; background: transparent; }
+    /* transparent band; only .card and .close paint pixels */
+    .band { position: fixed; left: 0; right: 0; bottom: 0; padding: 28px 16px 16px 16px; }
+    .card {
+      position: relative;
+      background: linear-gradient(180deg, #eafff0 0%, #d8f7e3 100%);
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+      padding: 18px 16px;
+      display: flex; align-items: center; gap: 14px;
+      font-family: -apple-system, Roboto, sans-serif;
+    }
+    .avatar { width: 56px; height: 56px; border-radius: 50%; background: #cfe9d6; flex: 0 0 auto; }
+    .text { flex: 1 1 auto; min-width: 0; }
+    .title { font-size: 20px; font-weight: 700; color: #14351f; }
+    .subtitle { font-size: 15px; color: #4a6b56; margin-top: 2px; }
+    .stars { display: flex; gap: 6px; flex: 0 0 auto; }
+    .star { font-size: 30px; color: #b9c6bd; cursor: pointer; }
+    .star.on { color: #f5a623; }
+    /* the overhanging close button with a transparent cutout look */
+    .close {
+      position: absolute; top: -18px; right: 10px;
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(255,255,255,0.92);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+      border: none; font-size: 20px; color: #555; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="band">
+    <div class="card">
+      <button class="close" onclick="CustomHtmlBridge._dismiss()">&times;</button>
+      <div class="avatar"></div>
+      <div class="text">
+        <div class="title">Rate the driver</div>
+        <div class="subtitle">Cisauk Train Station</div>
+      </div>
+      <div class="stars" id="stars">
+        <span class="star" data-v="1">&#9733;</span>
+        <span class="star" data-v="2">&#9733;</span>
+        <span class="star" data-v="3">&#9733;</span>
+        <span class="star" data-v="4">&#9733;</span>
+        <span class="star" data-v="5">&#9733;</span>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Browser-safe shim so this card previews outside the WebView (where CustomHtmlBridge is absent).
+    var b = window.CustomHtmlBridge || {
+      _display: function () {}, _click: function () {}, _dismiss: function () {},
+      _open: function () {}, _track: function () {}, _log: function () {}
+    };
+    // The rating use case is authored ENTIRELY in HTML against the generic bridge — no Kotlin knows
+    // about ratings. A star tap sends a custom MC event named 'iam_rating' with the score, then
+    // records a click-through completion (which also tears the card down).
+    var stars = document.querySelectorAll('#stars .star');
+    stars.forEach(function (s) {
+      s.addEventListener('click', function () {
+        var v = parseInt(s.getAttribute('data-v'), 10);
+        stars.forEach(function (o) {
+          o.classList.toggle('on', parseInt(o.getAttribute('data-v'), 10) <= v);
+        });
+        b._log('rating tapped: ' + v);
+        setTimeout(function () {
+          b._track('iam_rating', JSON.stringify({ rating: String(v) }));
+          b._click('rating');
+        }, 180);
+      });
+    });
+  </script>
+</body>
+</html>

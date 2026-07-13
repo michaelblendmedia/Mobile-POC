@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application>
+        <!-- Overlay host for OverlayControllerTest; test-only, merged into the androidTest APK. -->
+        <activity
+            android:name="com.sfmc.customhtmliam.TestHostActivity"
+            android:exported="false" />
+    </application>
+
+</manifest>
