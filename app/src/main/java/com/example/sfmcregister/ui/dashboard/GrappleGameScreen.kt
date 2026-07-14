@@ -1,6 +1,8 @@
 package com.example.sfmcregister.ui.dashboard
 
 import androidx.compose.animation.core.Animatable
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.sfmcregister.ui.dashboard.DashboardViewModel
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
@@ -175,8 +177,15 @@ private val RockGrey     = Color(0xFF6B6459)
 
 @Composable
 fun GrappleGameScreen(
-    onBackClick: () -> Unit = {}
+    onBackClick: () -> Unit = {},
+    viewModel: DashboardViewModel = hiltViewModel()
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.sendEventImmediate(
+            "page_open",
+            mapOf("game_value" to "grapple")
+        )
+    }
     val density = LocalDensity.current
     val scope = rememberCoroutineScope()
 

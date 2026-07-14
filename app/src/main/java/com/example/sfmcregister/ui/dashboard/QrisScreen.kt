@@ -20,11 +20,23 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.layout.ContentScale
 import com.example.sfmcregister.R
 
+import androidx.compose.runtime.LaunchedEffect
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.sfmcregister.ui.dashboard.DashboardViewModel
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QrisScreen(
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    viewModel: DashboardViewModel = hiltViewModel()
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.sendEventImmediate(
+            "page_open",
+            mapOf("screen" to "qris")
+        )
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(

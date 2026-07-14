@@ -25,6 +25,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.sfmcregister.ui.theme.OcbcRed
 
+import androidx.compose.runtime.LaunchedEffect
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.sfmcregister.ui.dashboard.DashboardViewModel
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
@@ -37,6 +41,14 @@ fun DashboardScreen(
     onGrappleClick: () -> Unit = {},
     onScratchClick: () -> Unit = {}
 ) {
+
+    LaunchedEffect(Unit) {
+        viewModel.sendEventImmediate(
+            "page_open",
+            mapOf("screen" to "home")
+        )
+    }
+
     Scaffold(
         bottomBar = { 
             DashboardBottomNav(

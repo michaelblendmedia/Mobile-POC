@@ -9,12 +9,23 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.runtime.LaunchedEffect
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.sfmcregister.ui.dashboard.DashboardViewModel
 
 @SuppressLint("SetJavaScriptEnabled")
+
 @Composable
 fun PuzzleGameScreen(
-    onBackClick: () -> Unit = {}
+    onBackClick: () -> Unit = {},
+    viewModel: DashboardViewModel = hiltViewModel()
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.sendEventImmediate(
+            "page_open",
+            mapOf("game_value" to "puzzle")
+        )
+    }
     AndroidView(
         modifier = Modifier.fillMaxSize(),
         factory = { context ->

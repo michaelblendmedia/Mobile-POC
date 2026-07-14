@@ -7,6 +7,8 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.LinearGradient
 import android.graphics.Shader
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.sfmcregister.ui.dashboard.DashboardViewModel
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
@@ -234,10 +236,18 @@ private fun ConfettiOverlay(trigger: Int, modifier: Modifier = Modifier) {
 }
 
 // ---------- Main screen ----------
+
 @Composable
 fun ScratchGameScreen(
-    onBackClick: () -> Unit = {}
+    onBackClick: () -> Unit = {},
+    viewModel: DashboardViewModel = hiltViewModel()
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.sendEventImmediate(
+            "page_open",
+            mapOf("game_value" to "scratch")
+        )
+    }
     val haptic = LocalHapticFeedback.current
     val scope = rememberCoroutineScope()
 

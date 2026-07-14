@@ -27,9 +27,23 @@ import com.example.sfmcregister.ui.theme.OcbcRed
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
+import androidx.compose.runtime.LaunchedEffect
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.sfmcregister.ui.dashboard.DashboardViewModel
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GamificationScreen(onBackClick: () -> Unit) {
+fun GamificationScreen(
+    onBackClick: () -> Unit,
+    viewModel: DashboardViewModel = hiltViewModel()
+) {
+    LaunchedEffect(Unit) {
+        viewModel.sendEventImmediate(
+            "page_open",
+            mapOf("game_value" to "gamification")
+        )
+    }
+
     val coroutineScope = rememberCoroutineScope()
     var isSpinning by remember { mutableStateOf(false) }
     var resultText by remember { mutableStateOf("Putar roda untuk mendapat poin!") }

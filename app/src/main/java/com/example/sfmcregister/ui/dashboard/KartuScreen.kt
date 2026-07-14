@@ -18,11 +18,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.sfmcregister.ui.theme.OcbcRed
 
+import androidx.compose.runtime.LaunchedEffect
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.sfmcregister.ui.dashboard.DashboardViewModel
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun KartuScreen(
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    viewModel: DashboardViewModel = hiltViewModel()
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.sendEventImmediate(
+            "kartu_page_open",
+            mapOf("screen" to "kartu")
+        )
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
