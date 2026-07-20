@@ -180,12 +180,7 @@ fun GrappleGameScreen(
     onBackClick: () -> Unit = {},
     viewModel: DashboardViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(Unit) {
-        viewModel.sendEventImmediate(
-            "page_open",
-            mapOf("game_value" to "grapple")
-        )
-    }
+
     val density = LocalDensity.current
     val scope = rememberCoroutineScope()
 
@@ -333,6 +328,10 @@ fun GrappleGameScreen(
                 timeLeftMs = 0
                 running = false
                 roundOver = true
+                viewModel.sendEventImmediate(
+                    "page_open",
+                    mapOf("game_value" to "$score Poin", "screen" to "Grapple")
+                )
                 continue
             }
 

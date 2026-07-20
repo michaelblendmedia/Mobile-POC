@@ -242,12 +242,7 @@ fun ScratchGameScreen(
     onBackClick: () -> Unit = {},
     viewModel: DashboardViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(Unit) {
-        viewModel.sendEventImmediate(
-            "page_open",
-            mapOf("game_value" to "scratch")
-        )
-    }
+
     val haptic = LocalHapticFeedback.current
     val scope = rememberCoroutineScope()
 
@@ -440,6 +435,10 @@ fun ScratchGameScreen(
                                                                 if (currentPrize.name != "Try Again") {
                                                                     confettiTrigger++
                                                                 }
+                                                                viewModel.sendEventImmediate(
+                                                                    "page_open",
+                                                                    mapOf("game_value" to currentPrize.name, "screen" to "Scratch")
+                                                                )
                                                             }
                                                         }
                                                     }

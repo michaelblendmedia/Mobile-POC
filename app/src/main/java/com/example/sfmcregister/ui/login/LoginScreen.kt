@@ -33,9 +33,10 @@ fun LoginScreen(
     var userId by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
-    // Use OCBC Red as background
-    val backgroundColor = MaterialTheme.colorScheme.primary
-    val contentColor = Color.White
+    // Use White as background
+    val backgroundColor = Color.White
+    val contentColor = Color(0xFF1A1A2E)
+    val primaryColor = MaterialTheme.colorScheme.primary
 
     Column(
         modifier = Modifier
@@ -51,10 +52,7 @@ fun LoginScreen(
             painter = painterResource(id = R.drawable.ocbc_logo),
             contentDescription = "OCBC Logo",
             contentScale = ContentScale.Fit,
-            modifier = Modifier
-                .size(100.dp)
-                .background(Color.White, shape = RoundedCornerShape(16.dp))
-                .padding(8.dp) // Adjusted padding for better fit
+            modifier = Modifier.size(100.dp)
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -88,10 +86,10 @@ fun LoginScreen(
             unfocusedTextColor = contentColor,
             focusedContainerColor = Color.Transparent,
             unfocusedContainerColor = Color.Transparent,
-            cursorColor = contentColor,
-            focusedBorderColor = contentColor,
+            cursorColor = primaryColor,
+            focusedBorderColor = primaryColor,
             unfocusedBorderColor = contentColor.copy(alpha = 0.5f),
-            focusedLabelColor = contentColor,
+            focusedLabelColor = primaryColor,
             unfocusedLabelColor = contentColor.copy(alpha = 0.7f)
         )
 
@@ -130,8 +128,8 @@ fun LoginScreen(
                 .fillMaxWidth()
                 .height(50.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color.White, // White button
-                contentColor = backgroundColor
+                containerColor = primaryColor,
+                contentColor = Color.White
             ),
             shape = RoundedCornerShape(8.dp)
         ) {
@@ -165,7 +163,7 @@ fun LoginScreen(
             Text(text = "Belum punya akun? ", color = contentColor)
             Text(
                 text = "Daftar",
-                color = contentColor,
+                color = primaryColor,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.clickable { onRegisterClick() }
             )

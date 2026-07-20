@@ -47,22 +47,23 @@ fun RegisterScreen(
         }
     }
 
-    val backgroundColor = MaterialTheme.colorScheme.primary
-    val contentColor = Color.White
+    val backgroundColor = Color.White
+    val contentColor = Color(0xFF1A1A2E)
+    val primaryColor = MaterialTheme.colorScheme.primary
     val textFieldColors = OutlinedTextFieldDefaults.colors(
         focusedTextColor = contentColor,
         unfocusedTextColor = contentColor,
         focusedContainerColor = Color.Transparent,
         unfocusedContainerColor = Color.Transparent,
-        cursorColor = contentColor,
-        focusedBorderColor = contentColor,
+        cursorColor = primaryColor,
+        focusedBorderColor = primaryColor,
         unfocusedBorderColor = contentColor.copy(alpha = 0.5f),
-        focusedLabelColor = contentColor,
+        focusedLabelColor = primaryColor,
         unfocusedLabelColor = contentColor.copy(alpha = 0.7f),
-        errorTextColor = contentColor,
-        errorBorderColor = contentColor,
-        errorSupportingTextColor = contentColor,
-        errorLabelColor = contentColor
+        errorTextColor = MaterialTheme.colorScheme.error,
+        errorBorderColor = MaterialTheme.colorScheme.error,
+        errorSupportingTextColor = MaterialTheme.colorScheme.error,
+        errorLabelColor = MaterialTheme.colorScheme.error
     )
 
     Scaffold(
@@ -234,8 +235,8 @@ fun RegisterScreen(
                     .fillMaxWidth()
                     .height(50.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.White.copy(alpha = if (state.isLoading) 0.5f else 1f),
-                    contentColor = backgroundColor
+                    containerColor = primaryColor.copy(alpha = if (state.isLoading) 0.5f else 1f),
+                    contentColor = Color.White
                 ),
                 shape = RoundedCornerShape(8.dp)
             ) {
@@ -243,7 +244,7 @@ fun RegisterScreen(
                     CircularProgressIndicator(
                         modifier = Modifier.size(22.dp),
                         strokeWidth = 2.dp,
-                        color = backgroundColor
+                        color = Color.White
                     )
                 } else {
                     Text("Daftar", fontWeight = FontWeight.Bold, fontSize = 16.sp)
@@ -261,8 +262,8 @@ fun RegisterScreen(
                     checked = state.manualMode,
                     onCheckedChange = viewModel::onManualModeChange,
                     colors = SwitchDefaults.colors(
-                        checkedThumbColor = contentColor,
-                        checkedTrackColor = Color(0xFF99C2FF)
+                        checkedThumbColor = Color.White,
+                        checkedTrackColor = primaryColor
                     )
                 )
             }
@@ -271,8 +272,8 @@ fun RegisterScreen(
                 onClick = viewModel::loadSdkInfo,
                 enabled = !state.isLoading,
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.outlinedButtonColors(contentColor = contentColor),
-                border = androidx.compose.foundation.BorderStroke(1.dp, contentColor)
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = primaryColor),
+                border = androidx.compose.foundation.BorderStroke(1.dp, primaryColor)
             ) {
                 Text("Lihat Info SDK")
             }
@@ -281,8 +282,8 @@ fun RegisterScreen(
                 onClick = viewModel::resetDeviceId,
                 enabled = !state.isLoading,
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.outlinedButtonColors(contentColor = contentColor),
-                border = androidx.compose.foundation.BorderStroke(1.dp, contentColor)
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = primaryColor),
+                border = androidx.compose.foundation.BorderStroke(1.dp, primaryColor)
             ) {
                 Text("Reset Device ID")
             }

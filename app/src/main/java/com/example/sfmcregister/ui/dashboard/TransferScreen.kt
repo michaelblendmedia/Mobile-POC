@@ -36,7 +36,7 @@ fun TransferScreen(
     // recomposition, sehingga tidak ada duplicate event).
     LaunchedEffect(Unit) {
         viewModel.sendEventImmediate(
-            "transfer_page_open",
+            "page_open",
             mapOf("screen" to "transfer")
         )
     }

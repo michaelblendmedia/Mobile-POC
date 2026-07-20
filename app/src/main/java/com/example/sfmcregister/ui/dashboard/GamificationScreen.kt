@@ -37,12 +37,7 @@ fun GamificationScreen(
     onBackClick: () -> Unit,
     viewModel: DashboardViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(Unit) {
-        viewModel.sendEventImmediate(
-            "page_open",
-            mapOf("game_value" to "gamification")
-        )
-    }
+
 
     val coroutineScope = rememberCoroutineScope()
     var isSpinning by remember { mutableStateOf(false) }
@@ -175,6 +170,11 @@ fun GamificationScreen(
 
                             resultText = if (prize == "Zonk") "Yah, coba lagi besok!" else "Selamat! Anda mendapat $prize!"
                             isSpinning = false
+                            
+                            viewModel.sendEventImmediate(
+                                "page_open",
+                                mapOf("game_value" to prize, "screen" to "Gamification")
+                            )
                         }
                     }
                 },

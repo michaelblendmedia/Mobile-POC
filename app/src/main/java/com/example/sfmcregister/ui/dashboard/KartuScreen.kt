@@ -30,7 +30,7 @@ fun KartuScreen(
 ) {
     LaunchedEffect(Unit) {
         viewModel.sendEventImmediate(
-            "kartu_page_open",
+            "page_open",
             mapOf("screen" to "kartu")
         )
     }

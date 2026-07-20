@@ -20,12 +20,7 @@ fun PuzzleGameScreen(
     onBackClick: () -> Unit = {},
     viewModel: DashboardViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(Unit) {
-        viewModel.sendEventImmediate(
-            "page_open",
-            mapOf("game_value" to "puzzle")
-        )
-    }
+
     AndroidView(
         modifier = Modifier.fillMaxSize(),
         factory = { context ->
@@ -49,6 +44,13 @@ fun PuzzleGameScreen(
                     @JavascriptInterface
                     fun closeGame() {
                         post { onBackClick() }
+                    }
+                    @JavascriptInterface
+                    fun onWin(points: Int) {
+                        viewModel.sendEventImmediate(
+                            "page_open",
+                            mapOf("game_value" to "$points Poin", "screen" to "Puzzle")
+                        )
                     }
                 }, "Android")
 
@@ -794,6 +796,7 @@ private val GAME_HTML = """
     state.poinseru += REWARD_POINSERU;
     document.getElementById("poinVal").textContent = state.poinseru;
     document.getElementById("overlay").classList.add("show");
+    if (window.Android && window.Android.onWin) { window.Android.onWin(REWARD_POINSERU); }
   }
 
   document.getElementById("playAgainBtn").addEventListener("click", function(){
