@@ -3,7 +3,9 @@ package com.example.sfmcregister.ui.dashboard
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ChevronRight
@@ -58,6 +60,7 @@ fun TransferScreen(
             modifier = Modifier
                 .padding(padding)
                 .fillMaxSize()
+                .verticalScroll(rememberScrollState())
                 .background(Color(0xFFE8EAF6)) // Light grey-blue background similar to reference
         ) {
             Text(
@@ -122,7 +125,7 @@ fun TransferScreen(
             
             Divider(color = Color.Gray, thickness = 1.dp, modifier = Modifier.padding(horizontal = 16.dp))
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(32.dp))
             
             Button(
                 onClick = { /* TODO */ },
@@ -135,6 +138,39 @@ fun TransferScreen(
             ) {
                 Text("Lanjut", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 16.sp)
             }
+            
+            // Dummy content to make the screen scrollable
+            Spacer(modifier = Modifier.height(32.dp))
+            Text(
+                text = "Riwayat Transfer",
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(horizontal = 16.dp),
+                color = Color.Black
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            repeat(10) {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 4.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column {
+                            Text(text = "Transfer ke John Doe", fontWeight = FontWeight.Bold)
+                            Text(text = "12 Juli 2023", fontSize = 12.sp, color = Color.Gray)
+                        }
+                        Text(text = "Rp 50.000", fontWeight = FontWeight.Bold, color = OcbcRed)
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(32.dp))
         }
     }
 }
